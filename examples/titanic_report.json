@@ -1,0 +1,185 @@
+{
+    "health_score": 89.56,
+    "shape": {
+        "rows": 950,
+        "columns": 20
+    },
+    "column_types": {
+        "numeric": [
+            "ID",
+            "Margin"
+        ],
+        "categorical": [
+            "City",
+            "Date",
+            "Season",
+            "MatchNumber",
+            "Team1",
+            "Team2",
+            "Venue",
+            "TossWinner",
+            "TossDecision",
+            "SuperOver",
+            "WinningTeam",
+            "WonBy",
+            "method",
+            "Player_of_Match",
+            "Team1Players",
+            "Team2Players",
+            "Umpire1",
+            "Umpire2"
+        ],
+        "datetime": []
+    },
+    "missing_percentage": {
+        "ID": 0.0,
+        "City": 5.37,
+        "Date": 0.0,
+        "Season": 0.0,
+        "MatchNumber": 0.0,
+        "Team1": 0.0,
+        "Team2": 0.0,
+        "Venue": 0.0,
+        "TossWinner": 0.0,
+        "TossDecision": 0.0,
+        "SuperOver": 0.42,
+        "WinningTeam": 0.42,
+        "WonBy": 0.0,
+        "Margin": 1.89,
+        "method": 98.0,
+        "Player_of_Match": 0.42,
+        "Team1Players": 0.0,
+        "Team2Players": 0.0,
+        "Umpire1": 0.0,
+        "Umpire2": 0.0
+    },
+    "warnings": {
+        "high_missing": [
+            "method"
+        ],
+        "high_cardinality": [
+            "Date",
+            "MatchNumber",
+            "Player_of_Match",
+            "Team1Players",
+            "Team2Players",
+            "Umpire1",
+            "Umpire2"
+        ]
+    },
+    "recommendations": {
+        "encoding": {
+            "City": {
+                "action": "required",
+                "message": "Categorical encoding required",
+                "confidence": "MEDIUM"
+            },
+            "Date": {
+                "action": "required",
+                "message": "Categorical encoding required (high cardinality)",
+                "confidence": "HIGH"
+            },
+            "Season": {
+                "action": "required",
+                "message": "Categorical encoding required",
+                "confidence": "MEDIUM"
+            },
+            "MatchNumber": {
+                "action": "required",
+                "message": "Categorical encoding required (high cardinality)",
+                "confidence": "HIGH"
+            },
+            "Team1": {
+                "action": "required",
+                "message": "Categorical encoding required",
+                "confidence": "MEDIUM"
+            },
+            "Team2": {
+                "action": "required",
+                "message": "Categorical encoding required",
+                "confidence": "MEDIUM"
+            },
+            "Venue": {
+                "action": "required",
+                "message": "Categorical encoding required",
+                "confidence": "MEDIUM"
+            },
+            "TossWinner": {
+                "action": "required",
+                "message": "Categorical encoding required",
+                "confidence": "MEDIUM"
+            },
+            "TossDecision": {
+                "action": "required",
+                "message": "Categorical encoding required",
+                "confidence": "MEDIUM"
+            },
+            "SuperOver": {
+                "action": "required",
+                "message": "Categorical encoding required",
+                "confidence": "MEDIUM"
+            },
+            "WinningTeam": {
+                "action": "required",
+                "message": "Categorical encoding required",
+                "confidence": "MEDIUM"
+            },
+            "WonBy": {
+                "action": "required",
+                "message": "Categorical encoding required",
+                "confidence": "MEDIUM"
+            },
+            "Player_of_Match": {
+                "action": "required",
+                "message": "Categorical encoding required (high cardinality)",
+                "confidence": "HIGH"
+            },
+            "Team1Players": {
+                "action": "required",
+                "message": "Categorical encoding required (high cardinality)",
+                "confidence": "HIGH"
+            },
+            "Team2Players": {
+                "action": "required",
+                "message": "Categorical encoding required (high cardinality)",
+                "confidence": "HIGH"
+            },
+            "Umpire1": {
+                "action": "required",
+                "message": "Categorical encoding required (high cardinality)",
+                "confidence": "HIGH"
+            },
+            "Umpire2": {
+                "action": "required",
+                "message": "Categorical encoding required (high cardinality)",
+                "confidence": "HIGH"
+            }
+        },
+        "missing": {
+            "City": {
+                "action": "impute",
+                "message": "5.37% missing values",
+                "confidence": "MEDIUM"
+            },
+            "method": {
+                "action": "drop",
+                "message": "98.0% missing values",
+                "confidence": "HIGH"
+            }
+        }
+    },
+    "numeric_diagnostics": {
+        "ID": {
+            "skewness": 0.0,
+            "outlier_percentage": 0.0,
+            "recommendation": "no transform needed",
+            "confidence": "MEDIUM"
+        },
+        "Margin": {
+            "skewness": 2.65,
+            "outlier_percentage": 12.23,
+            "recommendation": "consider log/robust transform",
+            "confidence": "HIGH"
+        }
+    }
+}
