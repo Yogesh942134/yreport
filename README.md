@@ -49,7 +49,7 @@ It helps answer:
 ### Install from source (recommended)
 
 ```bash
-git clone https://github.com/your-username/yreport.git
+git clone https://github.com/Yogesh942134/yreport.git
 cd yreport
 pip install -e .
 ```
