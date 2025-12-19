@@ -14,5 +14,9 @@ authors = [
 dependencies = [
     "pandas>=1.5",
     "numpy>=1.21",
-    "scipy"
+    "scipy",
+    "scikit-learn"
 ]
+
+[tool.setuptools.packages.find]
+where = ["."]
