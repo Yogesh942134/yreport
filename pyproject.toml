@@ -26,6 +26,10 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent"
 ]
+license = {text = "MIT"}
+readme = "README.md"
+
+
 [project.urls]
 Homepage = "https://github.com/Yogesh942134/yreport"
 Repository = "https://github.com/Yogesh942134/yreport"
