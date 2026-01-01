@@ -3,20 +3,18 @@
   <a href="https://pypi.org/project/yreport/">
     <img src="https://img.shields.io/pypi/v/yreport.svg">
   </a>
+
   <a href="https://pypi.org/project/yreport/">
     <img src="https://img.shields.io/pypi/pyversions/yreport.svg">
   </a>
+
   <img src="https://img.shields.io/github/license/Yogesh942134/yreport">
+
+  <a href="https://github.com/Yogesh942134/yreport/actions/workflows/release.yml">
+    <img src="https://github.com/Yogesh942134/yreport/actions/workflows/release.yml/badge.svg">
   </a>
-<a href="https://github.com/Yogesh942134/yreport/actions/workflows/release.yml">
-  <img src="https://github.com/Yogesh942134/yreport/actions/workflows/release.yml/badge.svg">
-</a>
-
-</a>
-
-</a>
-
 </p>
+
 
 
 ## 📦 Install
