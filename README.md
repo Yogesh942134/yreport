@@ -7,7 +7,8 @@
     <img src="https://img.shields.io/pypi/pyversions/yreport.svg">
   </a>
   <img src="https://img.shields.io/github/license/Yogesh942134/yreport">
-  <img src="https://img.shields.io/github/actions/workflow/status/Yogesh942134/yreport/release.yml">
+ <img src="https://img.shields.io/github/actions/workflow/status/Yogesh942134/yreport/release.yml?branch=main">
+
 </p>
 
 
