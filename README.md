@@ -1,6 +1,4 @@
 # 📊 yreport
-<img src="https://img.shields.io/github/actions/workflow/status/Yogesh942134/yreport/release.yml">
-
 <p align="center">
   <a href="https://pypi.org/project/yreport/">
     <img src="https://img.shields.io/pypi/v/yreport.svg">
@@ -9,7 +7,9 @@
     <img src="https://img.shields.io/pypi/pyversions/yreport.svg">
   </a>
   <img src="https://img.shields.io/github/license/Yogesh942134/yreport">
+  <img src="https://img.shields.io/github/actions/workflow/status/Yogesh942134/yreport/release.yml">
 </p>
+
 
 ## 📦 Install
 
