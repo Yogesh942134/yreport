@@ -1,5 +1,21 @@
 # 📊 yreport
+<img src="https://img.shields.io/github/actions/workflow/status/Yogesh942134/yreport/release.yml">
 
+<p align="center">
+  <a href="https://pypi.org/project/yreport/">
+    <img src="https://img.shields.io/pypi/v/yreport.svg">
+  </a>
+  <a href="https://pypi.org/project/yreport/">
+    <img src="https://img.shields.io/pypi/pyversions/yreport.svg">
+  </a>
+  <img src="https://img.shields.io/github/license/Yogesh942134/yreport">
+</p>
+
+## 📦 Install
+
+```bash
+pip install yreport
+```
 **yreport** is a lightweight, dataset-agnostic **data health reporting library** for tabular datasets.  
 It analyzes data quality, detects potential issues, and provides **honest, actionable diagnostics** without making unsafe assumptions.
 
