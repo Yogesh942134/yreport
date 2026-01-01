@@ -10,8 +10,6 @@
 
   <img src="https://img.shields.io/github/license/Yogesh942134/yreport">
 
-  <a href="https://github.com/Yogesh942134/yreport/actions">
-  <img src="https://github.com/Yogesh942134/yreport/actions/workflows/release.yml/badge.svg?branch=main&event=push&label=build">
 </a>
 
 </p>
