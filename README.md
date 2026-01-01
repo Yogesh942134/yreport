@@ -1,4 +1,5 @@
 # 📊 yreport
+<img src="https://img.shields.io/github/actions/workflow/status/Yogesh942134/yreport/release.yml">
 
 <p align="center">
   <a href="https://pypi.org/project/yreport/">
