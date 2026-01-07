@@ -3,14 +3,11 @@
   <a href="https://pypi.org/project/yreport/">
     <img src="https://img.shields.io/pypi/v/yreport.svg">
   </a>
-
-  <a href="https://pypi.org/project/yreport/">
-    <img src="https://img.shields.io/pypi/pyversions/yreport.svg">
+  <a href="https://pepy.tech/projects/yreport">
+    <img src="https://static.pepy.tech/personalized-badge/yreport?period=total&units=INTERNATIONAL_SYSTEM&left_color=BLACK&right_color=GREEN&left_text=downloads">
   </a>
-
   <img src="https://img.shields.io/github/license/Yogesh942134/yreport">
-
-</a>
+</p>
 
 </p>
 
