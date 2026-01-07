@@ -18,7 +18,7 @@
 ```bash
 pip install yreport
 ```
-**yreport** is a lightweight, dataset-agnostic **data health reporting library** for tabular datasets.  
+yreport is a lightweight, pipeline-ready data validation & health diagnostics library for tabular ML datasets.
 It analyzes data quality, detects potential issues, and provides **honest, actionable diagnostics** without making unsafe assumptions.
 
 Unlike heavy EDA tools, `yreport` is designed to be:
