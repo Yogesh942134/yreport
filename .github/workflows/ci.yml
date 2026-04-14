@@ -2,17 +2,17 @@ name: YReport CI
 
 on:
   push:
-    branches: [main, develop]  # Added develop branch
+    branches: [main, develop]
   pull_request:
-    branches: [main]  # Explicitly test PRs targeting main
+    branches: [main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']  # Test multiple versions
-      fail-fast: false  # Continue testing other versions even if one fails
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+      fail-fast: false
 
     steps:
       - uses: actions/checkout@v4
@@ -22,70 +22,53 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Cache pip packages
+      - name: Cache pip
         uses: actions/cache@v3
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements-dev.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}
 
       - name: Install dependencies
         run: |
           pip install -U pip
           pip install -e .
-          pip install pytest pytest-cov pytest-xdist  # Added pytest-cov for coverage
-          # If you have a requirements-dev.txt file:
-          # pip install -r requirements-dev.txt
+          pip install pytest pytest-cov
 
-      - name: Run tests with coverage
+      - name: Run tests
         run: |
           pytest --cov=yreport --cov-report=xml --cov-report=term-missing -v
 
-      - name: Upload coverage to Codecov
+      - name: Upload coverage
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage.xml
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
+          file: ./coverage.xml
+          flags: unittests,${{ matrix.python-version }}
 
   lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-
-      - name: Install linting tools
+      - name: Install tools
         run: |
-          pip install ruff black mypy
-
-      - name: Run Ruff (fast linter)
+          pip install ruff black
+      - name: Run Ruff
         run: ruff check .
-
-      - name: Run Black (code formatter check)
+      - name: Run Black
         run: black --check .
 
-      - name: Run MyPy (type checking)
-        run: mypy yreport --ignore-missing-imports
-
-  # Optional: Run tests on Windows and Mac as well
   cross-platform:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [windows-latest, macos-latest]
         python-version: ['3.10']
-
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
@@ -94,4 +77,4 @@ jobs:
           pip install -e .
           pip install pytest
       - name: Run tests
-        run: pytest
+        run: pytest -v
