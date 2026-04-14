@@ -28,7 +28,7 @@ class DataHealthReport:
         print(f"Categorical Columns : {self.column_types['categorical']}")
         print(f"DateTime Columns : {self.column_types['datetime']}")
         print()
-        print(f"Missing Percentage: ")
+        print("Missing Percentage: ")
         for col in self.missing_percentage:
             if self.missing_percentage[col] > 0:
                 print(f"- {col}: {self.missing_percentage[col]}%")
