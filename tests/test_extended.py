@@ -1,9 +1,11 @@
-import pytest
-import pandas as pd
-import numpy as np
 import json
-import os
 import math
+import os
+
+import numpy as np
+import pandas as pd
+import pytest
+
 from yreport.health import data_health_report
 
 
@@ -23,13 +25,15 @@ def test_data_types_and_edge_cases():
     assert report.health_score < 100.0
 
     # 3. Mixed types and special characters
-    df_mixed = pd.DataFrame({
-        "int": [1, 2, 3],
-        "float": [1.1, 2.2, 3.3],
-        "string": ["!@#", "$%^", "&*()"],
-        "bool": [True, False, True],
-        "date": pd.to_datetime(["2021-01-01", "2021-01-02", "2021-01-03"])
-    })
+    df_mixed = pd.DataFrame(
+        {
+            "int": [1, 2, 3],
+            "float": [1.1, 2.2, 3.3],
+            "string": ["!@#", "$%^", "&*()"],
+            "bool": [True, False, True],
+            "date": pd.to_datetime(["2021-01-01", "2021-01-02", "2021-01-03"]),
+        }
+    )
     report = data_health_report(df_mixed)
     assert "int" in report.column_types["numeric"]
     assert "float" in report.column_types["numeric"]
@@ -39,18 +43,12 @@ def test_data_types_and_edge_cases():
 
 def test_user_overrides():
     """Test categorical_cols, numeric_cols, and ignore_cols overrides."""
-    df = pd.DataFrame({
-        "id": [1, 2, 3],
-        "score": [10, 20, 30],
-        "label": ["A", "B", "A"]
-    })
+    df = pd.DataFrame(
+        {"id": [1, 2, 3], "score": [10, 20, 30], "label": ["A", "B", "A"]}
+    )
 
     # Override 'id' to be categorical and ignore 'score'
-    report = data_health_report(
-        df,
-        categorical_cols=["id"],
-        ignore_cols=["score"]
-    )
+    report = data_health_report(df, categorical_cols=["id"], ignore_cols=["score"])
 
     assert "id" in report.column_types["categorical"]
     assert "score" not in report.column_types["numeric"]
@@ -60,10 +58,7 @@ def test_user_overrides():
 
 def test_report_export_methods(tmp_path):
     """Test summary, to_dict, to_json, and to_markdown methods."""
-    df = pd.DataFrame({
-        "a": [1, 2, 3, 4, 1],
-        "b": ["x", "y", "x", "y", "x"]
-    })
+    df = pd.DataFrame({"a": [1, 2, 3, 4, 1], "b": ["x", "y", "x", "y", "x"]})
     report = data_health_report(df)
 
     # 1. to_dict
@@ -75,7 +70,7 @@ def test_report_export_methods(tmp_path):
     json_path = tmp_path / "report.json"
     report.to_json(path=str(json_path))
     assert os.path.exists(json_path)
-    with open(json_path, "r") as f:
+    with open(json_path) as f:
         loaded_json = json.load(f)
     assert loaded_json["health_score"] == report.health_score
 
@@ -94,10 +89,12 @@ def test_numeric_diagnostics():
     """Test skewness and outlier detection."""
     # Skewed data with outliers
     # Corrected lengths: both arrays are 100 elements long
-    df = pd.DataFrame({
-        "normal": np.random.normal(0, 1, 100),
-        "skewed": np.concatenate([np.random.exponential(1, 97), [100, 200, 300]])
-    })
+    df = pd.DataFrame(
+        {
+            "normal": np.random.normal(0, 1, 100),
+            "skewed": np.concatenate([np.random.exponential(1, 97), [100, 200, 300]]),
+        }
+    )
     report = data_health_report(df)
 
     assert "normal" in report.numeric
@@ -110,11 +107,13 @@ def test_recommendations_logic():
     """Test missing value recommendations and high cardinality."""
     # High missing values
     # Corrected lengths: all arrays are 100 elements long
-    df = pd.DataFrame({
-        "mostly_missing": [1] * 20 + [None] * 80,
-        "some_missing": [1] * 80 + [None] * 20,
-        "high_card": [str(i) for i in range(100)]
-    })
+    df = pd.DataFrame(
+        {
+            "mostly_missing": [1] * 20 + [None] * 80,
+            "some_missing": [1] * 80 + [None] * 20,
+            "high_card": [str(i) for i in range(100)],
+        }
+    )
     report = data_health_report(df)
 
     # Check missing recommendations

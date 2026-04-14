@@ -6,8 +6,4 @@ def detect_column_types(df: pd.DataFrame) -> dict:
     categorical = df.select_dtypes(include="object").columns.tolist()
     datetime = df.select_dtypes(include="datetime").columns.tolist()
 
-    return {
-        "numeric": numeric,
-        "categorical": categorical,
-        "datetime": datetime
-    }
+    return {"numeric": numeric, "categorical": categorical, "datetime": datetime}

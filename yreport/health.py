@@ -1,20 +1,20 @@
 # yreport/health.py
 import pandas as pd
-from .types import detect_column_types
+
+from .recommend import generate_recommendations, numeric_diagnostics
 from .report import DataHealthReport
-from .recommend import generate_recommendations
-from .recommend import numeric_diagnostics
+from .types import detect_column_types
 
-WEIGHTS = {
-    "missing": 0.5,
-    "duplicates": 0.3,
-    "cardinality": 0.2
-}
+WEIGHTS = {"missing": 0.5, "duplicates": 0.3, "cardinality": 0.2}
 
-def data_health_report(df: pd.DataFrame, drop_cols=None,
+
+def data_health_report(
+    df: pd.DataFrame,
+    drop_cols=None,
     categorical_cols=None,
     numeric_cols=None,
-    ignore_cols=None) -> DataHealthReport:
+    ignore_cols=None,
+) -> DataHealthReport:
 
     if not isinstance(df, pd.DataFrame):
         raise TypeError("Input must be a pandas DataFrame")
@@ -52,9 +52,9 @@ def data_health_report(df: pd.DataFrame, drop_cols=None,
     for key in column_types:
         column_types[key] = sorted(column_types[key])
 
-    #rows , cols
+    # rows , cols
     rows, cols = df.shape
-    #column_types = detect_column_types(df)
+    # column_types = detect_column_types(df)
 
     # Missing
     missing_ratio = df.isnull().mean().mean()
@@ -65,32 +65,31 @@ def data_health_report(df: pd.DataFrame, drop_cols=None,
     duplicate_score = 1 - duplicate_ratio
 
     # recommendation
-    recommendations = generate_recommendations(df,drop_cols ,column_types)
-    numeric = numeric_diagnostics(df, column_types['numeric'])
+    recommendations = generate_recommendations(df, drop_cols, column_types)
+    numeric = numeric_diagnostics(df, column_types["numeric"])
 
     # Cardinality
     drop_cols = {
-        col for col, info in recommendations["missing"].items()
+        col
+        for col, info in recommendations["missing"].items()
         if info["action"] == "drop"
     }
     categorical_cols = column_types["categorical"]
     high_card_cols = [
-        col for col in column_types["categorical"]
+        col
+        for col in column_types["categorical"]
         if df[col].nunique() > 50 and col not in drop_cols
     ]
 
-    cardinality_ratio = (
-        len(high_card_cols) / max(len(categorical_cols), 1)
-    )
+    cardinality_ratio = len(high_card_cols) / max(len(categorical_cols), 1)
     cardinality_score = 1 - cardinality_ratio
 
     # Final Weighted Score
     final_score = (
-        missing_score * WEIGHTS["missing"] +
-        duplicate_score * WEIGHTS["duplicates"] +
-        cardinality_score * WEIGHTS["cardinality"]
+        missing_score * WEIGHTS["missing"]
+        + duplicate_score * WEIGHTS["duplicates"]
+        + cardinality_score * WEIGHTS["cardinality"]
     ) * 100
-
 
     return DataHealthReport(
         health_score=round(final_score, 2),
@@ -100,12 +99,10 @@ def data_health_report(df: pd.DataFrame, drop_cols=None,
         duplicate_rows=int(df.duplicated().sum()),
         warnings={
             "high_missing": [
-                col for col, pct in (df.isnull().mean() * 100).items()
-                if pct > 30
+                col for col, pct in (df.isnull().mean() * 100).items() if pct > 30
             ],
-            "high_cardinality": high_card_cols
-
+            "high_cardinality": high_card_cols,
         },
-         recommendations = recommendations,
-        numeric = numeric
+        recommendations=recommendations,
+        numeric=numeric,
     )

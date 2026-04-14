@@ -1,13 +1,16 @@
 import pandas as pd
+
 from yreport.health import data_health_report
 
 
 def test_basic_data_health_report():
-    df = pd.DataFrame({
-        "age": [20, 21, None, 23],
-        "salary": [10000, 15000, 20000, None],
-        "city": ["A", "B", "B", "A"]
-    })
+    df = pd.DataFrame(
+        {
+            "age": [20, 21, None, 23],
+            "salary": [10000, 15000, 20000, None],
+            "city": ["A", "B", "B", "A"],
+        }
+    )
 
     report = data_health_report(df)
 

@@ -1,4 +1,3 @@
-
 class DataHealthReport:
     def __init__(
         self,
@@ -8,7 +7,7 @@ class DataHealthReport:
         missing_percentage: dict,
         duplicate_rows: int,
         warnings: dict,
-        recommendations : dict,
+        recommendations: dict,
         numeric: dict,
     ):
         self.health_score = health_score
@@ -62,7 +61,7 @@ class DataHealthReport:
             "duplicate_rows": self.duplicate_rows,
             "warnings": self.warnings,
             "recommendations": self.recommendations,
-            "Numeric Diagnostics": self.numeric
+            "Numeric Diagnostics": self.numeric,
         }
 
     def to_json(self, path: str | None = None) -> dict:
@@ -75,7 +74,7 @@ class DataHealthReport:
             "missing_percentage": self.missing_percentage,
             "warnings": self.warnings,
             "recommendations": self.recommendations,
-            "numeric_diagnostics": self.numeric
+            "numeric_diagnostics": self.numeric,
         }
 
         if path:
@@ -83,7 +82,6 @@ class DataHealthReport:
                 json.dump(data, f, indent=4)
 
         return data
-
 
     def to_markdown(self, path: str | None = None) -> str:
         lines = []
@@ -157,7 +155,3 @@ class DataHealthReport:
                 f.write(markdown_text)
 
         return markdown_text
-
-
-
-

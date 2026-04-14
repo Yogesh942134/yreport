@@ -1,14 +1,11 @@
 # yreport/recommend.py
-import pandas as pd
 import numpy as np
+import pandas as pd
 from scipy.stats import skew
 
 
-def generate_recommendations(df: pd.DataFrame,drop_cols ,column_types: dict) -> dict:
-    recommendations = {
-        "encoding": {},
-        "missing": {}
-    }
+def generate_recommendations(df: pd.DataFrame, drop_cols, column_types: dict) -> dict:
+    recommendations = {"encoding": {}, "missing": {}}
 
     missing_pct = (df.isnull().mean() * 100).round(2).to_dict()
 
@@ -18,24 +15,27 @@ def generate_recommendations(df: pd.DataFrame,drop_cols ,column_types: dict) -> 
             recommendations["missing"][col] = {
                 "action": "drop",
                 "message": f"{missing_pct[col]}% missing values",
-                "confidence": "HIGH"
+                "confidence": "HIGH",
             }
         elif missing_pct[col] > 5:
             recommendations["missing"][col] = {
                 "action": "impute",
                 "message": f"{missing_pct[col]}% missing values",
-                "confidence": "MEDIUM"
-        }
+                "confidence": "MEDIUM",
+            }
 
-    drop_cols = drop_cols | { col for col, info in recommendations["missing"].items()
-        if info["action"] == "drop"}
+    drop_cols = drop_cols | {
+        col
+        for col, info in recommendations["missing"].items()
+        if info["action"] == "drop"
+    }
 
     # Force user-defined drop columns
     for col in drop_cols:
         recommendations["missing"][col] = {
             "action": "drop",
             "message": "Dropped by user configuration",
-            "confidence": "HIGH"
+            "confidence": "HIGH",
         }
 
     # ---- Encoding (categorical) ----
@@ -47,17 +47,19 @@ def generate_recommendations(df: pd.DataFrame,drop_cols ,column_types: dict) -> 
         high_card = df[col].nunique() > 50
 
         recommendations["encoding"][col] = {
-            "action": 'required',
+            "action": "required",
             "message": (
                 "Categorical encoding required (high cardinality)"
-                if high_card else
-                "Categorical encoding required"
+                if high_card
+                else "Categorical encoding required"
             ),
-            "confidence": "HIGH" if high_card else "MEDIUM"
+            "confidence": "HIGH" if high_card else "MEDIUM",
         }
     return recommendations
 
+
 # numeric diagnostics
+
 
 def numeric_diagnostics(df, numeric_cols):
     diagnostics = {}
@@ -82,7 +84,7 @@ def numeric_diagnostics(df, numeric_cols):
                 if abs(col_skew) > 1 or outlier_pct > 5
                 else "no transform needed"
             ),
-            "confidence": "HIGH" if abs(col_skew) > 1 else "MEDIUM"
+            "confidence": "HIGH" if abs(col_skew) > 1 else "MEDIUM",
         }
 
     return diagnostics
