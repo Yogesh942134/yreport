@@ -73,7 +73,7 @@ def test_report_export_methods(tmp_path):
 
     # 2. to_json
     json_path = tmp_path / "report.json"
-    report_json = report.to_json(path=str(json_path))
+    report.to_json(path=str(json_path))
     assert os.path.exists(json_path)
     with open(json_path, "r") as f:
         loaded_json = json.load(f)
