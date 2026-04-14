@@ -2,13 +2,57 @@ name: YReport CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]  # Added develop branch
   pull_request:
+    branches: [main]  # Explicitly test PRs targeting main
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']  # Test multiple versions
+      fail-fast: false  # Continue testing other versions even if one fails
 
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Cache pip packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements-dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          pip install -U pip
+          pip install -e .
+          pip install pytest pytest-cov pytest-xdist  # Added pytest-cov for coverage
+          # If you have a requirements-dev.txt file:
+          # pip install -r requirements-dev.txt
+
+      - name: Run tests with coverage
+        run: |
+          pytest --cov=yreport --cov-report=xml --cov-report=term-missing -v
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+  lint:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -17,11 +61,37 @@ jobs:
         with:
           python-version: '3.10'
 
+      - name: Install linting tools
+        run: |
+          pip install ruff black mypy
+
+      - name: Run Ruff (fast linter)
+        run: ruff check .
+
+      - name: Run Black (code formatter check)
+        run: black --check .
+
+      - name: Run MyPy (type checking)
+        run: mypy yreport --ignore-missing-imports
+
+  # Optional: Run tests on Windows and Mac as well
+  cross-platform:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest]
+        python-version: ['3.10']
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
           pip install -U pip
           pip install -e .
-          pip install -r requirements-dev.txt
-
+          pip install pytest
       - name: Run tests
         run: pytest
