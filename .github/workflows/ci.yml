@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+        python-version: ['3.10', '3.11', '3.12', '3.13-dev']
       fail-fast: false
 
     steps:
@@ -22,11 +22,13 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Cache pip
+      - name: Cache pip packages
         uses: actions/cache@v3
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('setup.py') }}
+          key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-${{ matrix.python-version }}-
 
       - name: Install dependencies
         run: |
@@ -34,29 +36,35 @@ jobs:
           pip install -e .
           pip install pytest pytest-cov
 
-      - name: Run tests
+      - name: Run tests with coverage
         run: |
           pytest --cov=yreport --cov-report=xml --cov-report=term-missing -v
 
-      - name: Upload coverage
+      - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
           flags: unittests,${{ matrix.python-version }}
+          fail_ci_if_error: false
 
   lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-      - name: Install tools
+
+      - name: Install linting tools
         run: |
           pip install ruff black
+
       - name: Run Ruff
-        run: ruff check .
+        run: ruff check . --output-format=github
+
       - name: Run Black
         run: black --check .
 
@@ -68,13 +76,17 @@ jobs:
         python-version: ['3.10']
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+
       - name: Install dependencies
         run: |
           pip install -U pip
           pip install -e .
           pip install pytest
+
       - name: Run tests
         run: pytest -v
